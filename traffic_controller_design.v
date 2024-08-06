@@ -2,7 +2,7 @@ module traffic_controller (
     clk, rst, sb, a, b
 );
     input clk, rst, sb;
-    output reg[1:0] a, b;
+    output reg[1:0] a, b;//a=main road traffic, b=country road traffic
     reg[1:0] current_state, next_state;
     reg[9:0] ctr=0;
     parameter S0 = 0, S1 = 1, S2 = 2, S3 = 3;
@@ -18,7 +18,7 @@ module traffic_controller (
         
         case (current_state)
             S0:begin
-                a = 2; b = 0;
+                a = 2; b = 0;//a=green, b=red
                 if (sb == 1 & ctr < 4) begin
                     next_state = S0;
                     ctr = ctr + 1;
@@ -28,7 +28,7 @@ module traffic_controller (
                     next_state = S0;
             end 
             S1:begin
-                a = 1; b = 0;
+                a = 1; b = 0;//a=yellow,b=red
                 if (sb == 1 & ctr < 6) begin
                     next_state = S1;
                     ctr = ctr + 1;
@@ -40,14 +40,14 @@ module traffic_controller (
                 end 
             end
             S2:begin
-                a = 0; b = 2;
+                a = 0; b = 2;//a=red,b=green
                 ctr = ctr + 1;
                 if (ctr == 8) begin
                     next_state = S3;
                 end 
             end
             S3:begin
-                a = 0; b = 1;
+                a = 0; b = 1;//a=red,b=yellow
                 ctr = ctr + 1;
                 if (ctr == 10) begin
                     next_state = S0;
